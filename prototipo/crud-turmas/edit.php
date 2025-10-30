@@ -1,68 +1,43 @@
 <?php
 session_start();
-$current_user_id = $_SESSION['id_usuario'] ?? null;
-
 require(__DIR__ . '/../connect/index.php');
 
-$id_usuario = $nome = $email = $tipo = "";
-$errorMessage = $successMessage = "";
+// Verifica se foi passado um ID via GET
+if (!isset($_GET['id'])) {
+    header('Location: index.php');
+    exit;
+}
 
-// GET: carrega os dados do usuário
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (!isset($_GET['id'])) {
-        header("Location: index.php");
-        exit;
-    }
+$id_turma = (int)$_GET['id'];
 
-    $id_usuario = $_GET['id'];
-    $stmt = $conn->prepare("SELECT * FROM usuario WHERE id_usuario = :id");
-    $stmt->execute([':id' => $id_usuario]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+// Busca os dados da turma
+$stmt = $conn->prepare("SELECT * FROM turma WHERE id_turma = ?");
+$stmt->execute([$id_turma]);
+$turma = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$user) {
-        header("Location: index.php");
-        exit;
-    }
+if (!$turma) {
+    echo "Turma não encontrada.";
+    exit;
+}
 
-    $nome = $user['nome'];
-    $email = $user['email'];
-    $tipo = $user['tipo'];
-} 
+// Busca professores para o select
+$stmt_prof = $conn->query("SELECT id_professor, nome FROM professor ORDER BY nome ASC");
+$professores = $stmt_prof->fetchAll(PDO::FETCH_ASSOC);
 
-// POST: atualiza os dados
+// Atualiza turma
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_usuario = $_POST['id_usuario'];
-    $nome = trim($_POST['nome']);
-    $email = trim($_POST['email']);
-    $tipo = $_POST['tipo'];
-    $senha = $_POST['senha'];
+    $nome_turma = trim($_POST['nome_turma']);
+    $curso = trim($_POST['curso']);
+    $turno = trim($_POST['turno']);
+    $id_professor = $_POST['id_professor'] ?? null;
 
-    if (empty($nome) || empty($email)) {
-        $errorMessage = "Nome e E-mail são obrigatórios.";
+    if (empty($nome_turma) || empty($curso) || empty($turno)) {
+        $erro = "Preencha todos os campos obrigatórios.";
     } else {
-        // Atualiza senha apenas se o campo não estiver vazio
-        if (!empty($senha)) {
-            $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-            $stmt = $conn->prepare("UPDATE usuario SET nome=:nome, email=:email, tipo=:tipo, senha_hash=:senha WHERE id_usuario=:id");
-            $stmt->execute([
-                ':nome' => $nome,
-                ':email' => $email,
-                ':tipo' => $tipo,
-                ':senha' => $senha_hash,
-                ':id' => $id_usuario
-            ]);
-        } else {
-            $stmt = $conn->prepare("UPDATE usuario SET nome=:nome, email=:email, tipo=:tipo WHERE id_usuario=:id");
-            $stmt->execute([
-                ':nome' => $nome,
-                ':email' => $email,
-                ':tipo' => $tipo,
-                ':id' => $id_usuario
-            ]);
-        }
+        $stmt = $conn->prepare("UPDATE turma SET nome_turma = ?, curso = ?, turno = ?, id_professor = ? WHERE id_turma = ?");
+        $stmt->execute([$nome_turma, $curso, $turno, $id_professor, $id_turma]);
 
-        $successMessage = "Usuário atualizado com sucesso!";
-        header("Location: index.php");
+        header('Location: index.php');
         exit;
     }
 }
@@ -73,49 +48,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editar Usuário</title>
+<title>Editar Turma</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-<link rel="shortcut icon" href="../img/ico/favicon.ico" type="image/x-icon">
 </head>
 <body>
 <div class="container my-5">
-<h2>Editar Usuário - <?= htmlspecialchars($nome) ?></h2>
+    <h2>Editar Turma</h2>
 
-<?php if($errorMessage): ?>
-<div class="alert alert-warning alert-dismissible fade show"><?= $errorMessage ?>
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-<?php endif; ?>
+    <?php if (!empty($erro)): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($erro) ?></div>
+    <?php endif; ?>
 
-<form method="post">
-<input type="hidden" name="id_usuario" value="<?= $id_usuario ?>">
+    <form method="post">
+        <div class="mb-3">
+            <label for="nome_turma" class="form-label">Nome da Turma:</label>
+            <input type="text" name="nome_turma" id="nome_turma" class="form-control" 
+                   value="<?= htmlspecialchars($turma['nome_turma']) ?>" required>
+        </div>
 
-<div class="mb-3">
-    <label class="form-label">Nome *</label>
-    <input type="text" class="form-control" name="nome" value="<?= htmlspecialchars($nome) ?>" required>
-</div>
+        <div class="mb-3">
+            <label for="curso" class="form-label">Curso:</label>
+            <input type="text" name="curso" id="curso" class="form-control" 
+                   value="<?= htmlspecialchars($turma['curso']) ?>" required>
+        </div>
 
-<div class="mb-3">
-    <label class="form-label">E-mail *</label>
-    <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($email) ?>" required>
-</div>
+        <div class="mb-3">
+            <label for="turno" class="form-label">Turno:</label>
+            <select name="turno" id="turno" class="form-select" required>
+                <option value="Manhã" <?= $turma['turno'] === 'Manhã' ? 'selected' : '' ?>>Manhã</option>
+                <option value="Tarde" <?= $turma['turno'] === 'Tarde' ? 'selected' : '' ?>>Tarde</option>
+                <option value="Noite" <?= $turma['turno'] === 'Noite' ? 'selected' : '' ?>>Noite</option>
+            </select>
+        </div>
 
-<div class="mb-3">
-    <label class="form-label">Tipo</label>
-    <select class="form-select" name="tipo">
-        <option value="admin" <?= $tipo=='admin'?'selected':'' ?>>Admin</option>
-        <option value="professor" <?= $tipo=='professor'?'selected':'' ?>>Professor</option>
-    </select>
-</div>
+        <div class="mb-3">
+            <label for="id_professor" class="form-label">Professor Responsável:</label>
+            <select name="id_professor" id="id_professor" class="form-select">
+                <option value="">-- Nenhum --</option>
+                <?php foreach ($professores as $prof): ?>
+                    <option value="<?= $prof['id_professor'] ?>" 
+                        <?= $prof['id_professor'] == $turma['id_professor'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($prof['nome']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
 
-<div class="mb-3">
-    <label class="form-label">Senha (preencha apenas se quiser alterar)</label>
-    <input type="password" class="form-control" name="senha">
-</div>
-
-<button type="submit" class="btn btn-primary">Salvar</button>
-<a href="index.php" class="btn btn-outline-secondary">Cancelar</a>
-</form>
+        <button type="submit" class="btn btn-success">Salvar Alterações</button>
+        <a href="index.php" class="btn btn-secondary">Cancelar</a>
+    </form>
 </div>
 </body>
 </html>

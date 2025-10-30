@@ -35,7 +35,7 @@ try {
 </head>
 <body>
 <nav class="navbar navbar-light bg-light px-3">
-  <a class="navbar-brand d-flex align-items-center" href="../home/index.php">
+  <a class="navbar-brand d-flex align-items-center" href="../home/index.html">
     <img src="../img/crud/logo-nav.png" width="30" height="30" class="d-inline-block align-top me-2" alt="logo-nav">
     Sistema de presença com carteirinha
   </a>
@@ -51,6 +51,11 @@ try {
       <li class="nav-item">
         <a class="nav-link" href="../crud-turmas/index.php">Turmas</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../crud/index.php">Presenças</a>
+      </li>
+    </ul>
+
     <span class="me-2">Olá, <?= htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário') ?></span>
     <a class="btn btn-outline-secondary btn-sm" href="../crud-usuarios/logout.php">Sair</a>
   </div>

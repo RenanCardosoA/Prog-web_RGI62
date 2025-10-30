@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Salvar</button>
+    <button type="submit" class="btn btn-success">Salvar</button>
     <a href="index.php" class="btn btn-outline-secondary">Cancelar</a>
 </form>
 </div>

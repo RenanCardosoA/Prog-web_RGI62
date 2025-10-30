@@ -1,3 +1,14 @@
+<?php
+session_start();
+$current_user_id = $_SESSION['id_usuario'] ?? null;
+if (!isset($_SESSION['id_usuario'])) {
+    header('Location: ../crud-usuarios/login.php');
+    exit; 
+}
+
+$nome_usuario = htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário', ENT_QUOTES, 'UTF-8');
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,13 +20,16 @@
 </head>
 <body>
 <nav class="navbar navbar-light bg-light px-3">
-  <a class="navbar-brand d-flex align-items-center" href="../home/index.php">
+  <a class="navbar-brand d-flex align-items-center" href="../home/index.html">
     <img src="../img/crud/logo-nav.png" width="30" height="30" class="d-inline-block align-top me-2" alt="logo-nav">
     Sistema de presença com carteirinha
   </a>
 
   <div class="d-flex align-items-center">
     <ul class="nav me-3">
+      <li class="nav-item">
+        <a class="nav-link" href="../crud-aluno/index.php">Alunos</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="../crud-usuarios/index.php">Usuários</a>
       </li>
@@ -48,8 +62,6 @@
         </thead>
         <tbody>
         <?php
-        session_start();
-        $current_user_id = $_SESSION['id_usuario'] ?? null;
 
         try {
             require(__DIR__ . '/../connect/index.php');
