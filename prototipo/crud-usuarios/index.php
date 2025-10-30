@@ -48,7 +48,7 @@ $usuarios = $conn->query("SELECT * FROM usuario ORDER BY nome ASC")->fetchAll(PD
 <h2>Usuários</h2>
 <a href="create.php" class="btn btn-primary mb-3">Adicionar Usuário</a>
 
-<table class="table table-bordered">
+<table class="table table-striped">
 <thead>
 <tr>
     <th>ID</th>

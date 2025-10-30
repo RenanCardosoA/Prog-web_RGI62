@@ -53,7 +53,7 @@ $turmas = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 <h2>Turmas</h2>
 <a href="create.php" class="btn btn-primary mb-3">Adicionar Turma</a>
 
-<table class="table table-bordered">
+<table class="table table-striped">
 <thead>
 <tr>
     <th>ID</th>

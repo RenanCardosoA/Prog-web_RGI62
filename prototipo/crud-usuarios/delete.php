@@ -1,4 +1,6 @@
 <?php
+require(__DIR__ . '/../connect/index.php');
+
 session_start();
 $current_user_id = $_SESSION['id_usuario'] ?? null;
 
@@ -10,9 +12,6 @@ if (!isset($_GET['id'])) {
 $id_usuario = $_GET['id'];
 
 try {
-    $conn = new PDO("mysql:host=localhost;dbname=prototipo;charset=utf8mb4", "root", "");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     $stmt = $conn->prepare("DELETE FROM usuario WHERE id_usuario = :id");
     $stmt->execute([':id' => $id_usuario]);
 
