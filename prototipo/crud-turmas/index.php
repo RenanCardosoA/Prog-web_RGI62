@@ -22,12 +22,30 @@ $turmas = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 <link rel="shortcut icon" href="../img/ico/favicon.ico" type="image/x-icon">
 </head>
 <body>
-<nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="../home/index.html">
-        <img src="../img/crud/logo-nav.png" width="30" height="30" class="d-inline-block align-top" alt="logo-nav">
-        Sistema de presença com carteirinha
-    </a>
+<nav class="navbar navbar-light bg-light px-3">
+  <a class="navbar-brand d-flex align-items-center" href="../home/index.php">
+    <img src="../img/crud/logo-nav.png" width="30" height="30" class="d-inline-block align-top me-2" alt="logo-nav">
+    Sistema de presença com carteirinha
+  </a>
+
+  <div class="d-flex align-items-center">
+    <ul class="nav me-3">
+      <li class="nav-item">
+        <a class="nav-link" href="../crud-aluno/index.php">Alunos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../crud-usuarios/index.php">Usuários</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../crud/index.php">Presenças</a>
+      </li>
+    </ul>
+
+    <span class="me-2">Olá, <?= htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário') ?></span>
+    <a class="btn btn-outline-secondary btn-sm" href="../crud-usuarios/logout.php">Sair</a>
+  </div>
 </nav>
+
 <div class="container my-5">
 <h2>Turmas</h2>
 <a href="create.php" class="btn btn-primary mb-3">Adicionar Turma</a>

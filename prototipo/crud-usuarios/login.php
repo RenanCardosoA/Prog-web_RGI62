@@ -25,7 +25,7 @@ try {
                 $_SESSION['nome_usuario'] = $user['nome'];
                 $_SESSION['tipo_usuario'] = $user['tipo'];
 
-                header("Location: /prototipo/crud/index.php");
+                header("Location: ../crud/index.php");
                 exit;
             } else {
                 $error = "E-mail ou senha inválidos.";
