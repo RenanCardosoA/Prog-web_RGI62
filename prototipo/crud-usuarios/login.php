@@ -24,8 +24,13 @@ try {
                 $_SESSION['id_usuario'] = $user['id_usuario'];
                 $_SESSION['nome_usuario'] = $user['nome'];
                 $_SESSION['tipo_usuario'] = $user['tipo'];
-
-                header("Location: ../crud/index.php");
+                
+                if ($_SESSION['tipo_usuario'] === 'admin') {
+                    $_SESSION['is_admin'] = true;
+                    header("Location: ../crud/index.php");
+                } else {
+                    header("Location: ../cr-presenca_professor/index.php");
+                }
                 exit;
             } else {
                 $error = "E-mail ou senha inválidos.";
