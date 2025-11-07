@@ -45,7 +45,6 @@ $nome_usuario = htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário', ENT_QU
 
 <div class="container my-5">
     <h2>Lista de Alunos</h2>
-    <a class="btn btn-primary mb-3" href="create.php" role="button">Adicionar Aluno</a>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -54,7 +53,6 @@ $nome_usuario = htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário', ENT_QU
                 <th>Matrícula</th>
                 <th>Email</th>
                 <th>Telefone</th>
-                <th>Ação</th>
             </tr>
         </thead>
         <tbody>
@@ -74,10 +72,6 @@ $nome_usuario = htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário', ENT_QU
                     <td>{$row['matricula']}</td>
                     <td>{$row['email']}</td>
                     <td>{$row['telefone']}</td>
-                    <td>
-                        <a class='btn btn-primary btn-sm' href='edit.php?id={$row['id_aluno']}'>Editar</a>
-                        <a class='btn btn-danger btn-sm' href='delete.php?id={$row['id_aluno']}'>Deletar</a>
-                    </td>
                 </tr>
                 ";
             }

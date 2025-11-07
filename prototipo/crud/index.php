@@ -9,9 +9,11 @@ if (!isset($_SESSION['id_usuario'])) {
 }
 
 try {
-    require(__DIR__ . '/../connect/index.php'); // seu arquivo de conexão deve definir $conn (PDO)
+    require(__DIR__ . '/../connect/index.php');
+
+    // Agora incluindo p.observacao na seleção
     $sql = "SELECT p.id_presenca, a.nome AS aluno_nome, t.nome_turma AS turma_nome, 
-                   p.data_presenca, p.hora, p.status, u.nome AS usuario_nome
+                   p.data_presenca, p.hora, p.observacao, p.status, u.nome AS usuario_nome
             FROM presenca p
             JOIN aluno a ON p.id_aluno = a.id_aluno
             JOIN turma t ON p.id_turma = t.id_turma
@@ -20,7 +22,7 @@ try {
     $stmt = $conn->query($sql);
     $presencas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    // em produção troque por um erro amigável
+    //caso haja erro
     die("Erro na consulta: " . $e->getMessage());
 }
 ?>
@@ -80,20 +82,22 @@ try {
         </thead>
         <tbody>
         <?php if (empty($presencas)): ?>
-            <tr><td colspan="8" class="text-center">Nenhuma presença registrada.</td></tr>
+            <tr><td colspan="9" class="text-center">Nenhuma presença registrada.</td></tr>
         <?php else: ?>
             <?php foreach ($presencas as $row): ?>
                 <tr>
-                    <td><?= htmlspecialchars($row['id_presenca']) ?></td>
-                    <td><?= htmlspecialchars($row['aluno_nome']) ?></td>
-                    <td><?= htmlspecialchars($row['turma_nome']) ?></td>
-                    <td><?= htmlspecialchars($row['data_presenca']) ?></td>
-                    <td><?= htmlspecialchars($row['hora']) ?></td>
-                    <td><?= htmlspecialchars($row['status']) ?></td>
-                    <td><?= htmlspecialchars($row['usuario_nome'] ?? '—') ?></td>
-                    <td>
+                    <td><?= ($row['id_presenca']) ?></td>
+                    <td><?= ($row['aluno_nome']) ?></td>
+                    <td><?= ($row['turma_nome']) ?></td>
+                    <td><?= ($row['data_presenca']) ?></td>
+                    <td><?= ($row['hora']) ?></td>
+                    <td><?= ($row['status']) ?></td>
+                    <td><?= ($row['usuario_nome'] ?? 'desconhecido') ?></td>
+                    <td class="text-nowrap">
+                      <div class="d-flex gap-2">
                         <a class="btn btn-primary btn-sm" href="edit.php?id=<?= urlencode($row['id_presenca']) ?>">Editar</a>
-                        <a class="btn btn-danger btn-sm" href="delete.php?id=<?= urlencode($row['id_presenca']) ?>" onclick="return confirm('Confirmar exclusão?')">Deletar</a>
+                        <a class="btn btn-danger btn-sm" href="delete.php?id=<?= urlencode($row['id_presenca']) ?>">Deletar</a>
+                      </div>
                     </td>
                 </tr>
             <?php endforeach; ?>

@@ -55,6 +55,7 @@ $nome_usuario = htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário', ENT_QU
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Matrícula</th>
+                <th>Turma</th>
                 <th>Email</th>
                 <th>Telefone</th>
                 <th>Ação</th>
@@ -75,6 +76,7 @@ $nome_usuario = htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário', ENT_QU
                     <td>{$row['id_aluno']}</td>
                     <td>{$row['nome']}</td>
                     <td>{$row['matricula']}</td>
+                    <td>{$row['id_turma']}</td>
                     <td>{$row['email']}</td>
                     <td>{$row['telefone']}</td>
                     <td>

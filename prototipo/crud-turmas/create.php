@@ -2,7 +2,7 @@
 session_start();
 $current_user_id = $_SESSION['id_usuario'] ?? null;
 
-$nome_turma = $curso = $turno = $professor = "";
+$nome_turma = $curso = $turno = "";
 $errorMessage = $successMessage = "";
 
 require(__DIR__ . '/../connect/index.php');
@@ -14,20 +14,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome_turma = trim($_POST['nome_turma']);
     $curso = trim($_POST['curso']);
     $turno = $_POST['turno'];
-    $professor = $_POST['professor'] ?: null;
 
     if (empty($nome_turma)) {
         $errorMessage = "Nome da turma é obrigatório.";
     } else {
         $stmt = $conn->prepare("
-            INSERT INTO turma (nome_turma, curso, turno, id_professor)
-            VALUES (:nome_turma, :curso, :turno, :professor)
+            INSERT INTO turma (nome_turma, curso, turno)
+            VALUES (:nome_turma, :curso, :turno)
         ");
         $stmt->execute([
             ':nome_turma' => $nome_turma,
             ':curso' => $curso ?: null,
             ':turno' => $turno,
-            ':professor' => $professor
         ]);
         $successMessage = "Turma cadastrada com sucesso!";
         $nome_turma = $curso = $turno = $professor = "";
@@ -76,16 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <select class="form-select" name="turno">
             <option value="manhã" <?= $turno=='manhã'?'selected':'' ?>>Manhã</option>
             <option value="tarde" <?= $turno=='tarde'?'selected':'' ?>>Tarde</option>
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Professor</label>
-        <select class="form-select" name="professor">
-            <option value="">—</option>
-            <?php foreach($professores as $p): ?>
-                <option value="<?= $p['id_professor'] ?>" <?= ($professor==$p['id_professor'])?'selected':'' ?>><?= htmlspecialchars($p['nome']) ?></option>
-            <?php endforeach; ?>
         </select>
     </div>
 

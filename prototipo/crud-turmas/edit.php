@@ -20,22 +20,17 @@ if (!$turma) {
     exit;
 }
 
-// Busca professores para o select
-$stmt_prof = $conn->query("SELECT id_professor, nome FROM professor ORDER BY nome ASC");
-$professores = $stmt_prof->fetchAll(PDO::FETCH_ASSOC);
-
 // Atualiza turma
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome_turma = trim($_POST['nome_turma']);
     $curso = trim($_POST['curso']);
     $turno = trim($_POST['turno']);
-    $id_professor = $_POST['id_professor'] ?? null;
 
     if (empty($nome_turma) || empty($curso) || empty($turno)) {
-        $erro = "Preencha todos os campos obrigatórios.";
+        $erro = "Preencha todos os campos.";
     } else {
-        $stmt = $conn->prepare("UPDATE turma SET nome_turma = ?, curso = ?, turno = ?, id_professor = ? WHERE id_turma = ?");
-        $stmt->execute([$nome_turma, $curso, $turno, $id_professor, $id_turma]);
+        $stmt = $conn->prepare("UPDATE turma SET nome_turma = ?, curso = ?, turno = ? WHERE id_turma = ?");
+        $stmt->execute([$nome_turma, $curso, $turno, $id_turma]);
 
         header('Location: index.php');
         exit;
@@ -77,20 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select name="turno" id="turno" class="form-select" required>
                 <option value="Manhã" <?= $turma['turno'] === 'Manhã' ? 'selected' : '' ?>>Manhã</option>
                 <option value="Tarde" <?= $turma['turno'] === 'Tarde' ? 'selected' : '' ?>>Tarde</option>
-                <option value="Noite" <?= $turma['turno'] === 'Noite' ? 'selected' : '' ?>>Noite</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="id_professor" class="form-label">Professor Responsável:</label>
-            <select name="id_professor" id="id_professor" class="form-select">
-                <option value="">-- Nenhum --</option>
-                <?php foreach ($professores as $prof): ?>
-                    <option value="<?= $prof['id_professor'] ?>" 
-                        <?= $prof['id_professor'] == $turma['id_professor'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($prof['nome']) ?>
-                    </option>
-                <?php endforeach; ?>
             </select>
         </div>
 

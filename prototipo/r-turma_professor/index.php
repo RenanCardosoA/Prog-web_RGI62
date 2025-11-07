@@ -31,16 +31,13 @@ $turmas = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
   <div class="d-flex align-items-center">
     <ul class="nav me-3">
       <li class="nav-item">
-        <a class="nav-link" href="../crud-aluno/index.php">Alunos</a>
+        <a class="nav-link" href="../r-aluno_professor/index.php">Alunos</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="../crud-usuarios/index.php">Usuários</a>
+        <a class="nav-link" href="index.php">Turmas</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="../crud-turmas/index.php">Turmas</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="../crud/index.php">Presenças</a>
+        <a class="nav-link" href="../cr-presenca_professor/index.php">Presenças</a>
       </li>
     </ul>
 
@@ -51,7 +48,6 @@ $turmas = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="container my-5">
 <h2>Turmas</h2>
-<a href="create.php" class="btn btn-primary mb-3">Adicionar Turma</a>
 
 <table class="table table-striped">
 <thead>
@@ -60,8 +56,6 @@ $turmas = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     <th>Nome</th>
     <th>Curso</th>
     <th>Turno</th>
-    <th>Professor</th>
-    <th>Ação</th>
 </tr>
 </thead>
 <tbody>
@@ -71,11 +65,6 @@ $turmas = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     <td><?= htmlspecialchars($t['nome_turma']) ?></td>
     <td><?= htmlspecialchars($t['curso']) ?></td>
     <td><?= htmlspecialchars($t['turno']) ?></td>
-    <td><?= htmlspecialchars($t['professor_nome']) ?></td>
-    <td>
-        <a href="edit.php?id=<?= $t['id_turma'] ?>" class="btn btn-primary btn-sm">Editar</a>
-        <a href="delete.php?id=<?= $t['id_turma'] ?>" class="btn btn-danger btn-sm">Deletar</a>
-    </td>
 </tr>
 <?php endforeach; ?>
 </tbody>

@@ -43,7 +43,7 @@ try {
   <div class="d-flex align-items-center">
     <ul class="nav me-3">
       <li class="nav-item">
-        <a class="nav-link" href="../cr-aluno_professor/index.php">Alunos</a>
+        <a class="nav-link" href="../r-aluno_professor/index.php">Alunos</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="../r-turma_professor/index.php">Turmas</a>
@@ -80,13 +80,13 @@ try {
         <?php else: ?>
             <?php foreach ($presencas as $row): ?>
                 <tr>
-                    <td><?= htmlspecialchars($row['id_presenca']) ?></td>
-                    <td><?= htmlspecialchars($row['aluno_nome']) ?></td>
-                    <td><?= htmlspecialchars($row['turma_nome']) ?></td>
-                    <td><?= htmlspecialchars($row['data_presenca']) ?></td>
-                    <td><?= htmlspecialchars($row['hora']) ?></td>
-                    <td><?= htmlspecialchars($row['status']) ?></td>
-                    <td><?= htmlspecialchars($row['usuario_nome'] ?? '—') ?></td>
+                    <td><?= ($row['id_presenca']) ?></td>
+                    <td><?= ($row['aluno_nome']) ?></td>
+                    <td><?= ($row['turma_nome']) ?></td>
+                    <td><?= ($row['data_presenca']) ?></td>
+                    <td><?= ($row['hora']) ?></td>
+                    <td><?= ($row['status']) ?></td>
+                    <td><?= ($row['usuario_nome'] ?? '—') ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>

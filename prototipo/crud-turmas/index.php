@@ -60,7 +60,6 @@ $turmas = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     <th>Nome</th>
     <th>Curso</th>
     <th>Turno</th>
-    <th>Professor</th>
     <th>Ação</th>
 </tr>
 </thead>
@@ -71,7 +70,6 @@ $turmas = $conn->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     <td><?= htmlspecialchars($t['nome_turma']) ?></td>
     <td><?= htmlspecialchars($t['curso']) ?></td>
     <td><?= htmlspecialchars($t['turno']) ?></td>
-    <td><?= htmlspecialchars($t['professor_nome']) ?></td>
     <td>
         <a href="edit.php?id=<?= $t['id_turma'] ?>" class="btn btn-primary btn-sm">Editar</a>
         <a href="delete.php?id=<?= $t['id_turma'] ?>" class="btn btn-danger btn-sm">Deletar</a>
