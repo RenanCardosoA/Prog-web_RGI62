@@ -50,7 +50,7 @@ try {
       </li>
     </ul>
 
-    <span class="me-2">Olá, <?= htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário') ?></span>
+    <span class="me-2">Olá, <?= htmlspecialchars($_SESSION['nome_usuario'] ?? 'Ana') ?></span>
     <a class="btn btn-outline-secondary btn-sm" href="../crud-usuarios/logout.php">Sair</a>
   </div>
 </nav>

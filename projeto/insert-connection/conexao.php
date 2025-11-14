@@ -10,9 +10,8 @@ try {
 
     echo "Conectado com sucesso!<br>";
 
-
-    $id_aluno = 1; 
-    $id_turma = 3; 
+    $id_aluno = 7; 
+    $id_turma = 2; 
     $data = date("Y-m-d");
     $status = "presente";
     $observacao = "Presença adicionada manualmente.";

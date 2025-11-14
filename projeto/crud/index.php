@@ -89,7 +89,7 @@ try {
                     <td><?= ($row['data_presenca']) ?></td>
                     <td><?= ($row['hora']) ?></td>
                     <td><?= ($row['status']) ?></td>
-                    <td><?= ($row['usuario_nome'] ?? 'desconhecido') ?></td>
+                    <td><?= ($row['usuario_nome'] ?? 'Ana') ?></td>
                     <td class="text-nowrap">
                       <div class="d-flex gap-2">
                         <a class="btn btn-primary btn-sm" href="edit.php?id=<?= urlencode($row['id_presenca']) ?>">Editar</a>
