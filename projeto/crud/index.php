@@ -1,8 +1,5 @@
 <?php
-// /prototipo/crud/index.php
 session_start();
-
-// proteção simples: só permite acesso se houver sessão
 if (!isset($_SESSION['id_usuario'])) {
     header("Location: ../crud-usuarios/login.php");
     exit;

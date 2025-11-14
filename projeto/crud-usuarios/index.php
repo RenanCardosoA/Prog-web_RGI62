@@ -1,6 +1,10 @@
 <?php
 session_start();
 $current_user_id = $_SESSION['id_usuario'] ?? null;
+if (!isset($_SESSION['id_usuario'])) {
+    header('Location: ../crud-usuarios/login.php');
+    exit; 
+}
 
 require(__DIR__ . '/../connect/index.php');
 
