@@ -6,6 +6,7 @@ if (!isset($_SESSION['id_usuario'])) {
     exit; 
 }
 
+
 require(__DIR__ . '/../connect/index.php');
 
 $usuarios = $conn->query("SELECT * FROM usuario ORDER BY nome ASC")->fetchAll(PDO::FETCH_ASSOC);
@@ -41,9 +42,12 @@ $usuarios = $conn->query("SELECT * FROM usuario ORDER BY nome ASC")->fetchAll(PD
       <li class="nav-item">
         <a class="nav-link" href="../crud/index.php">Presenças</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../crud/relatorio_aluno.php">relatório</a>
+      </li>
     </ul>
 
-    <span class="me-2">Olá, <?= htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário') ?></span>
+    <span class="me-2">Olá, <?= $_SESSION['nome_usuario'] ?? 'Usuário' ?></span>
     <a class="btn btn-outline-secondary btn-sm" href="../crud-usuarios/logout.php">Sair</a>
   </div>
 </nav>
@@ -66,9 +70,9 @@ $usuarios = $conn->query("SELECT * FROM usuario ORDER BY nome ASC")->fetchAll(PD
 <?php foreach($usuarios as $u): ?>
 <tr>
     <td><?= $u['id_usuario'] ?></td>
-    <td><?= htmlspecialchars($u['nome']) ?></td>
-    <td><?= htmlspecialchars($u['email']) ?></td>
-    <td><?= htmlspecialchars($u['tipo']) ?></td>
+    <td><?= $u['nome']?></td>
+    <td><?= $u['email'] ?></td>
+    <td><?= $u['tipo'] ?></td>
     <td>
         <a href="edit.php?id=<?= $u['id_usuario'] ?>" class="btn btn-primary btn-sm">Editar</a>
         <a href="delete.php?id=<?= $u['id_usuario'] ?>" class="btn btn-danger btn-sm">Deletar</a>

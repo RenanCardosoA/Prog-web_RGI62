@@ -2,7 +2,7 @@
 session_start();
 require(__DIR__ . '/../connect/index.php');
 
-// Verifica se o ID foi passado
+// vai verificar se fez login mesmo ou não
 if (!isset($_GET['id'])) {
     header('Location: index.php');
     exit;
@@ -10,7 +10,7 @@ if (!isset($_GET['id'])) {
 
 $id = (int)$_GET['id'];
 
-// Busca os dados atuais do usuário
+// Busca os dados e campos do usuário
 $stmt = $conn->prepare("SELECT * FROM usuario WHERE id_usuario = ?");
 $stmt->execute([$id]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -29,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if (!empty($senha)) {
-            // Atualiza também a senha (com hash)
+            // vai atualizar a senha se houver alterações no campo
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
             $stmt = $conn->prepare("UPDATE usuario SET nome = ?, email = ?, tipo = ?, senha = ? WHERE id_usuario = ?");
             $stmt->execute([$nome, $email, $tipo, $senhaHash, $id]);
         } else {
-            // Atualiza sem alterar senha
+            // Não atualiza senha
             $stmt = $conn->prepare("UPDATE usuario SET nome = ?, email = ?, tipo = ? WHERE id_usuario = ?");
             $stmt->execute([$nome, $email, $tipo, $id]);
         }
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: index.php');
         exit;
     } catch (PDOException $e) {
-        echo "Erro ao atualizar: " . htmlspecialchars($e->getMessage());
+        echo "Erro ao atualizar: " . $e->getMessage();
     }
 }
 ?>
@@ -60,12 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="post">
         <div class="mb-3">
             <label for="nome" class="form-label">Nome:</label>
-            <input type="text" name="nome" id="nome" class="form-control" value="<?= htmlspecialchars($usuario['nome']) ?>" required>
+            <input type="text" name="nome" id="nome" class="form-control" value="<?= $usuario['nome'] ?>" required>
         </div>
 
         <div class="mb-3">
             <label for="email" class="form-label">Email:</label>
-            <input type="email" name="email" id="email" class="form-control" value="<?= htmlspecialchars($usuario['email']) ?>" required>
+            <input type="email" name="email" id="email" class="form-control" value="<?= $usuario['email'] ?>" required>
         </div>
 
         <div class="mb-3">

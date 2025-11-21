@@ -48,6 +48,9 @@ try {
       <li class="nav-item">
         <a class="nav-link" href="index.php">Presenças</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../crud/relatorio_aluno.php">relatório</a>
+      </li>
     </ul>
 
     <span class="me-2">Olá, <?= htmlspecialchars($_SESSION['nome_usuario'] ?? 'Ana') ?></span>

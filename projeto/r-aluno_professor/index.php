@@ -36,6 +36,9 @@ $nome_usuario = htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário', ENT_QU
       <li class="nav-item">
         <a class="nav-link" href="../cr-presenca_professor/index.php">Presenças</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="../crud/relatorio_aluno.php">relatório</a>
+      </li>
     </ul>
 
     <span class="me-2">Olá, <?= htmlspecialchars($_SESSION['nome_usuario'] ?? 'Usuário') ?></span>

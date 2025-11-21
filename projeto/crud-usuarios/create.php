@@ -16,12 +16,12 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     if(empty($nome) || empty($email) || empty($senha)){
         $errorMessage = "Nome, Email e Senha são obrigatórios.";
     } else {
-        $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO usuario (nome, email, senha_hash, tipo) VALUES (:nome, :email, :senha, :tipo)");
+        $senha_hash = ($senha);
+        $stmt = $conn->prepare("INSERT INTO usuario (nome, email, senha, tipo) VALUES (:nome, :email, :senha, :tipo)");
         $stmt->execute([
             ':nome' => $nome,
             ':email' => $email,
-            ':senha' => $senha_hash,
+            ':senha' => $senha,
             ':tipo' => $tipo
         ]);
         $successMessage = "Usuário cadastrado com sucesso!";
@@ -58,12 +58,12 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 <form method="post">
 <div class="mb-3">
     <label class="form-label">Nome *</label>
-    <input type="text" class="form-control" name="nome" value="<?= htmlspecialchars($nome) ?>" required>
+    <input type="text" class="form-control" name="nome" value="<?= $nome ?>" required>
 </div>
 
 <div class="mb-3">
     <label class="form-label">E-mail *</label>
-    <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($email) ?>" required>
+    <input type="email" class="form-control" name="email" value="<?= $email ?>" required>
 </div>
 
 <div class="mb-3">

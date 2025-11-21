@@ -6,7 +6,7 @@ session_start();
 $error = "";
 
 try {
-    require(__DIR__ . '/../connect/index.php'); // mantém seu require para conexão
+    require(__DIR__ . '/../connect/index.php'); 
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim($_POST['email'] ?? '');
@@ -15,12 +15,12 @@ try {
         if ($email === '' || $senha === '') {
             $error = "Preencha e-mail e senha.";
         } else {
-            $stmt = $conn->prepare("SELECT id_usuario, nome, senha_hash, tipo FROM usuario WHERE email = :email LIMIT 1");
+            $stmt = $conn->prepare("SELECT id_usuario, nome, senha, tipo FROM usuario WHERE email = :email LIMIT 1");
             $stmt->execute([':email' => $email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($user && password_verify($senha, $user['senha_hash'])) {
-                // grava sessão usando as chaves que o index.php espera
+            if ($user && password_verify($senha, $user['senha'])) {
+                // grava sessão usando
                 $_SESSION['id_usuario'] = $user['id_usuario'];
                 $_SESSION['nome_usuario'] = $user['nome'];
                 $_SESSION['tipo_usuario'] = $user['tipo'];
@@ -54,12 +54,12 @@ try {
 <div class="container my-5" style="max-width:600px">
     <h3>Login</h3>
     <?php if($error): ?>
-        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+        <div class="alert alert-danger"><?= $error ?></div>
     <?php endif; ?>
     <form method="post" action="">
         <div class="mb-3">
             <label class="form-label">E-mail</label>
-            <input type="email" name="email" class="form-control" required value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+            <input type="email" name="email" class="form-control" required value="<?= $_POST['email'] ?? '' ?>">
         </div>
         <div class="mb-3">
             <label class="form-label">Senha</label>
