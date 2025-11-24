@@ -2,7 +2,7 @@
 $host = "localhost";
 $dbname = "sistema_presenca"; 
 $username = "root";
-$password = "";
+$password = "1234";
 
 try {
     $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
