@@ -9,7 +9,6 @@ $errorMessage = $successMessage = "";
 try {
     require(__DIR__ . '/../connect/index.php');
 
-    // Busca turmas para popular o select
     $turmas = $conn->query("SELECT id_turma, nome_turma FROM turma ORDER BY nome_turma ASC")->fetchAll(PDO::FETCH_ASSOC);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,13 +19,11 @@ try {
         $email = trim($_POST['email'] ?? '');
         $telefone = trim($_POST['telefone'] ?? '');
         $id_turma = $_POST['turma'] ?? null;
-        if ($id_turma === '') $id_turma = null; // normaliza
+        if ($id_turma === '') $id_turma = null; 
 
-        // Validação básica
         if (empty($nome) || empty($matricula)) {
             $errorMessage = "Nome e Matrícula são obrigatórios.";
         } else {
-            // Inserção: inclui id_turma se informar (coluna id_turma deve existir na tabela aluno)
             if ($id_turma !== null) {
                 $stmt = $conn->prepare("
                     INSERT INTO aluno (nome, matricula, cpf, data_nascimento, email, telefone, id_turma)
@@ -60,11 +57,9 @@ try {
                 $stmt->execute($params);
 
                 $successMessage = "Aluno cadastrado com sucesso!";
-                // Limpar campos após salvar
                 $nome = $matricula = $cpf = $data_nascimento = $email = $telefone = "";
                 $id_turma = null;
             } catch (PDOException $e) {
-                // Mensagem mais amigável para FK / coluna ausente
                 if (strpos($e->getMessage(), 'Unknown column') !== false) {
                     $errorMessage = "Erro no banco: parece que a coluna de turma (id_turma) não existe na tabela aluno. "
                         . "Verifique o esquema do banco ou execute o SQL para adicionar a coluna.";

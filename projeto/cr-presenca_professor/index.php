@@ -6,7 +6,7 @@ if (!isset($_SESSION['id_usuario'])) {
 }
 
 try {
-    require(__DIR__ . '/../connect/index.php'); // seu arquivo de conexão deve definir $conn (PDO)
+    require(__DIR__ . '/../connect/index.php');
     $sql = "SELECT p.id_presenca, a.nome AS aluno_nome, t.nome_turma AS turma_nome, 
                    p.data_presenca, p.hora, p.status, u.nome AS usuario_nome
             FROM presenca p
@@ -17,7 +17,6 @@ try {
     $stmt = $conn->query($sql);
     $presencas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    // em produção troque por um erro amigável
     die("Erro na consulta: " . $e->getMessage());
 }
 ?>

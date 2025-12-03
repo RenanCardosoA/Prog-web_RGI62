@@ -6,7 +6,6 @@ require(__DIR__ . '/../connect/index.php');
 
 $errorMessage = $successMessage = "";
 
-// Buscar alunos, turmas e usuários para selects
 $alunos = $conn->query("SELECT id_aluno, nome FROM aluno ORDER BY nome ASC")->fetchAll(PDO::FETCH_ASSOC);
 $turmas = $conn->query("SELECT id_turma, nome_turma FROM turma ORDER BY nome_turma ASC")->fetchAll(PDO::FETCH_ASSOC);
 $usuarios = $conn->query("SELECT id_usuario, nome FROM usuario ORDER BY nome ASC")->fetchAll(PDO::FETCH_ASSOC);

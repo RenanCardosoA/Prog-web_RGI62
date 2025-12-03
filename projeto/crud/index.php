@@ -8,7 +8,6 @@ if (!isset($_SESSION['id_usuario'])) {
 try {
     require(__DIR__ . '/../connect/index.php');
 
-    // Agora incluindo p.observacao na seleção
     $sql = "SELECT p.id_presenca, a.nome AS aluno_nome, t.nome_turma AS turma_nome, 
                    p.data_presenca, p.hora, p.observacao, p.status, u.nome AS usuario_nome
             FROM presenca p
@@ -19,7 +18,6 @@ try {
     $stmt = $conn->query($sql);
     $presencas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    //caso haja erro
     die("Erro na consulta: " . $e->getMessage());
 }
 ?>

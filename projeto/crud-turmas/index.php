@@ -8,7 +8,6 @@ if (!isset($_SESSION['id_usuario'])) {
 
 require(__DIR__ . '/../connect/index.php');
 
-// Listar turmas com info do professor
 $sql = "SELECT t.id_turma, t.nome_turma, t.curso, t.turno, p.nome AS professor_nome
         FROM turma t
         LEFT JOIN professor p ON t.id_professor = p.id_professor

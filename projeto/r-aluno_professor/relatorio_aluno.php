@@ -17,7 +17,6 @@ if ($aluno && $ano) {
     $params = [':aluno'=>$aluno, ':ano'=>$ano];
     if ($turma !== 'all' && $turma !== '') { $where .= " AND p.id_turma = :turma"; $params[':turma']=$turma; }
 
-    // totais (single query)
     $sql = "SELECT 
                 COUNT(*) AS total,
                 SUM(p.status='presente') AS presentes,
@@ -26,21 +25,18 @@ if ($aluno && $ano) {
             FROM presenca p
             $where";
     $stmt = $conn->prepare($sql); $stmt->execute($params); $tot = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // mensal
+    
     $sql = "SELECT MONTH(p.data_presenca) AS mes, COUNT(*) AS total, SUM(p.status='presente') AS presentes
             FROM presenca p
             $where
             GROUP BY mes ORDER BY mes";
     $stmt = $conn->prepare($sql); $stmt->execute($params); $monthly = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // registros
     $sql = "SELECT p.id_presenca, p.data_presenca, p.hora, p.status, p.observacao, t.nome_turma
             FROM presenca p JOIN turma t ON t.id_turma = p.id_turma
             $where ORDER BY p.data_presenca DESC, p.hora DESC";
     $stmt = $conn->prepare($sql); $stmt->execute($params); $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // dados do aluno 
     $al = $conn->prepare("SELECT nome, matricula FROM aluno WHERE id_aluno = :id LIMIT 1");
     $al->execute([':id'=>$aluno]); $alunoInfo = $al->fetch(PDO::FETCH_ASSOC);
 

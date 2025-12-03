@@ -2,7 +2,6 @@
 session_start();
 require(__DIR__ . '/../connect/index.php');
 
-// Verifica se foi passado um ID via GET
 if (!isset($_GET['id'])) {
     header('Location: index.php');
     exit;
@@ -10,7 +9,6 @@ if (!isset($_GET['id'])) {
 
 $id_turma = (int)$_GET['id'];
 
-// Busca os dados da turma
 $stmt = $conn->prepare("SELECT * FROM turma WHERE id_turma = ?");
 $stmt->execute([$id_turma]);
 $turma = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -20,7 +18,6 @@ if (!$turma) {
     exit;
 }
 
-// Atualiza turma
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome_turma = trim($_POST['nome_turma']);
     $curso = trim($_POST['curso']);

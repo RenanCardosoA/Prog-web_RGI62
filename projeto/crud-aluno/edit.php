@@ -9,7 +9,6 @@ require(__DIR__ . '/../connect/index.php');
 
 $errorMessage = $successMessage = "";
 
-// Buscar dados existentes
 $stmt = $conn->prepare("SELECT * FROM aluno WHERE id_aluno = :id");
 $stmt->execute([':id' => $id]);
 $aluno = $stmt->fetch(PDO::FETCH_ASSOC);

@@ -7,7 +7,6 @@ $errorMessage = $successMessage = "";
 
 require(__DIR__ . '/../connect/index.php');
 
-// Buscar professores para select
 $professores = $conn->query("SELECT id_professor, nome FROM professor ORDER BY nome ASC")->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

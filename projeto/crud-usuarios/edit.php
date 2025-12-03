@@ -2,7 +2,6 @@
 session_start();
 require(__DIR__ . '/../connect/index.php');
 
-// vai verificar se fez login mesmo ou não
 if (!isset($_GET['id'])) {
     header('Location: index.php');
     exit;
@@ -10,7 +9,6 @@ if (!isset($_GET['id'])) {
 
 $id = (int)$_GET['id'];
 
-// Busca os dados e campos do usuário
 $stmt = $conn->prepare("SELECT * FROM usuario WHERE id_usuario = ?");
 $stmt->execute([$id]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -20,7 +18,6 @@ if (!$usuario) {
     exit;
 }
 
-// Atualiza se o formulário foi enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'] ?? '';
     $email = $_POST['email'] ?? '';
@@ -29,12 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if (!empty($senha)) {
-            // vai atualizar a senha se houver alterações no campo
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
             $stmt = $conn->prepare("UPDATE usuario SET nome = ?, email = ?, tipo = ?, senha = ? WHERE id_usuario = ?");
             $stmt->execute([$nome, $email, $tipo, $senhaHash, $id]);
         } else {
-            // Não atualiza senha
             $stmt = $conn->prepare("UPDATE usuario SET nome = ?, email = ?, tipo = ? WHERE id_usuario = ?");
             $stmt->execute([$nome, $email, $tipo, $id]);
         }
